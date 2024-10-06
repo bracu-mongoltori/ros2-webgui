@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Map with Bootstrap and Leaflet</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/Control.FullScreen.css" />
+    <style>
+      #map {
+        height: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col">
+          <h1>Simple Map with Bootstrap and Leaflet</h1>
+          <div id="map"></div>
+          <div class="col-12 p-2" id="latlongcards">
+            <!-- Cards will be appended here -->
+          </div>
+          <form id="coordinate-form" class="mt-4">
+            <div class="form-group">
+              <label for="latitude">Latitude</label>
+              <input
+                type="number"
+                step="any"
+                class="form-control"
+                id="latitude"
+                placeholder="Enter latitude"
+              />
+            </div>
+            <div class="form-group">
+              <label for="longitude">Longitude</label>
+              <input
+                type="number"
+                step="any"
+                class="form-control"
+                id="longitude"
+                placeholder="Enter longitude"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button
+              type="button"
+              id="get-coordinates"
+              class="btn btn-secondary"
+            >
+              Get
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="node_modules/roslib/build/roslib.min.js"></script>
+    <script src="node_modules/leaflet/dist/leaflet.js"></script>
+    <script src="js/umd.js"></script>
+    <script src="js/Control.FullScreen.js"></script>
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script>
+      var map; // Declare map variable globally
+
+      // Function to create the map
+      function createMap() {
+        // Create the map
+        map = L.map("map").setView([0, 0], 23);
+        // Add the tile layer (OpenStreetMap)
+        // L.tileLayer.offline('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer(
+          "http://localhost:8080/wmts/gm_layer/gm_grid/{z}/{x}/{y}.png",
+          {
+            attribution: "&copy; 2024 Google",
+            maxZoom: 28,
+            maxNativeZoom: 19,
+          }
+        ).addTo(map);
+
+        var fsControl = L.control.fullscreen({
+          position: "topleft", // change the position of the button can be topleft, topright, bottomright or bottomleft, default topleft
+          // title: "Show me the fullscreen !", // change the title of the button, default Full Screen
+          // titleCancel: "Exit fullscreen mode", // change the title of the button when fullscreen is on, default Exit Full Screen
+          // content: "", // change the content of the button, can be HTML, default null
+          forceSeparateButton: true, // force separate button to detach from zoom buttons, default false
+          // forcePseudoFullscreen: true, // force use of pseudo full screen even if full screen API is available, default false
+          // fullscreenElement: false, // Dom element to render in full screen, false by default, fallback to map._container
+        });
+        // add fullscreen control to the map
+        map.addControl(fsControl);
+        // Add the tile layer (OpenStreetMap)
+        //L.tileLayer.mbTiles('bangladesh.mbtiles').addTo(map);
+      }
+
+      function addPolyline(lat, lng) {
+        markers.push([lat, lng]);
+        L.polyline(markers, { color: "red" }).addTo(map);
+      }
+
+      function addRoverMarker(lat, lng, angle) {
+        // Remove old marker if it exists
+        if (roverMarker !== null) {
+          map.removeLayer(roverMarker);
+        }
+        // Update with new marker
+        roverMarker = L.marker([lat, lng], {
+          rotationAngle: Number(angle),
+          icon: navIcon,
+        }).addTo(map);
+      }
+
+      // Function to add a new marker to the markers array and update the map
+      function addMarker(lat, lng) {
+        // Check if the coordinates already exist in the array
+        var isDuplicate = markers.some(function (coord) {
+          return coord[0] === lat && coord[1] === lng;
+        });
+
+        // If not a duplicate, add the new marker to the array
+        if (!isDuplicate) {
+          objectivemarkers.push([lat, lng]);
+
+          // Add updated markers to the map
+          //addMarkers(markers);
+          marker = L.marker([lat, lng])
+            .bindPopup(`latitude is ${lat}<br>longtitude is ${lng}`)
+            .openPopup()
+            .addTo(map);
+
+          circle = L.circle([lat, lng], {
+            color: "red",
+            fillColor: "#f03",
+            fillOpacity: 0.5,
+            radius: 20,
+          }).addTo(map);
+
+          objectmarkers.push([marker, circle]);
+        } else {
+          console.log("Coordinates already exist in the array.");
+        }
+      }
+      function publishtoROSTopic(ros, topic, msgtype, value) {
+        var publisher = new ROSLIB.Topic({
+          ros: ros,
+          name: topic,
+          messageType: msgtype,
+        });
+        publisher.publish(value);
+      }
+
+      function subscribeToROSTopic(ros, topic, msgtype) {
+        // Subscribe to the topic
+        var listener = new ROSLIB.Topic({
+          ros: ros,
+          name: topic, // Replace with your actual ROS topic name
+          messageType: msgtype, // Adjust message type if needed
+        });
+        console.log(topic);
+        if (msgtype == "sensor_msgs/NavSatFix") {
+          // Define callback function to handle received messages
+          listener.subscribe(function (message) {
+            // Extract coordinates from the received message
+            console.log(message);
+            lat = message.latitude;
+            lng = message.longitude;
+            if (topic == "/hex") {
+              marker = L.marker([lat, lng])
+            .bindPopup(`latitude is ${lat}<br>longtitude is ${lng}`)
+            .openPopup()
+            .addTo(map);
+            }
+            else {
+            addPolyline(lat, lng);
+            addRoverMarker(lat, lng, angle);
+            }
+          });
+        } else {
+          listener.subscribe(function (message) {
+            // Extract coordinates from the received message
+            angle = message.data;
+            addRoverMarker(lat, lng, angle);
+          });
+        }
+      }
+
+      function appendCard(id, lat, lng, index) {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const cardBody = document.createElement("div");
+        cardBody.className =
+          "card-body d-flex flex-row justify-content-between";
+        cardBody.textContent = `Latitude: ${lat} Longitude: ${lng} `;
+
+        var labelTextarea = document.createElement("textarea");
+        labelTextarea.className = "form-control";
+        labelTextarea.placeholder = "Enter label here";
+        labelTextarea.rows = 1;
+        labelTextarea.value = "";
+
+        var options = ["None", "Post", "Mallet", "Bottle"];
+
+        options.forEach(function (option, index) {
+          var radioDiv = document.createElement("div");
+          radioDiv.className = "form-check form-check-inline";
+
+          var radioInput = document.createElement("input");
+          radioInput.className = "form-check-input";
+          radioInput.type = "radio";
+          radioInput.name = "options";
+          radioInput.id = "option" + (index + 1);
+          radioInput.value = option;
+          if (option == "None") {
+            radioInput.checked = true;
+          }
+
+          var radioLabel = document.createElement("label");
+          radioLabel.className = "form-check-label";
+          radioLabel.htmlFor = "option" + (index + 1);
+          radioLabel.innerText = option;
+
+          radioDiv.appendChild(radioInput);
+          radioDiv.appendChild(radioLabel);
+          cardBody.appendChild(radioDiv);
+        });
+
+        buttonDiv = document.createElement("div");
+
+        var publishBtn = document.createElement("button");
+        publishBtn.className = "btn btn-primary me-2";
+        publishBtn.type = "button";
+        publishBtn.innerText = "Publish";
+        publishBtn.addEventListener("click", function () {
+          var selectedOption = cardBody.querySelector(
+            'input[name="options"]:checked'
+          );
+          if (selectedOption) {
+            if (selectedOption.value == "Post") {
+              altitude = 0.0;
+            } else if (selectedOption.value == "Mallet") {
+              altitude = 1.0;
+            } else if (selectedOption.value == "Bottle") {
+              altitude = 2.0;
+            } else {
+              altitude = 3.0;
+            }
+
+            var navSatFixMessage = new ROSLIB.Message({
+              latitude: Number(lat), // Example latitude
+              longitude: Number(lng), // Example longitude
+              altitude: altitude, // Example altitude
+              // position_covariance: [0, 0, 0, 0, 0, 0, 0, 0, 0], // Example covariance
+              // position_covariance_type: 0, // Example covariance type
+            });
+
+            publishtoROSTopic(
+              ros,
+              "/autonomous",
+              "sensor_msgs/NavSatFix",
+              navSatFixMessage
+            );
+
+            console.log("Selected:", selectedOption.value);
+          } else {
+            console.log("No option selected");
+          }
+        });
+
+        const removeButton = document.createElement("button");
+        removeButton.className = "btn btn-danger me-2";
+        removeButton.textContent = "Remove";
+        removeButton.addEventListener("click", function () {
+          card.remove();
+          map.removeLayer(objectmarkers[index][0]);
+          map.removeLayer(objectmarkers[index][1]);
+          // objectmarkers.pop(objcounter - 1);
+          console.log(objectivemarkers);
+          //objectmarkers.pop(objcounter - 1);
+        });
+
+        buttonDiv.appendChild(publishBtn);
+        buttonDiv.appendChild(removeButton);
+        cardBody.appendChild(buttonDiv);
+        card.appendChild(labelTextarea);
+        card.appendChild(cardBody);
+        document.getElementById(id).appendChild(card);
+      }
+
+      // MAIN FUNCTION
+      // Call the functions to create the map and add initial markers
+      createMap();
+      var markers = []; // For Polyline
+      var objectivemarkers = []; // For Markers
+      var objectmarkers = [];
+      let objcounter = 0;
+      lat = 0.0;
+      lng = 0.0;
+      angle = 0.0;
+      roverMarker = null;
+
+      document
+        .getElementById("coordinate-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the form from submitting the traditional way
+          const lat = document.getElementById("latitude").value;
+          const lng = document.getElementById("longitude").value;
+          addMarker(lat, lng);
+          console.log(objectmarkers);
+          console.log("Latitude:", lat);
+          console.log("Longitude:", lng);
+          appendCard("latlongcards", lat, lng, objcounter);
+          objcounter++;
+        });
+
+      document
+        .getElementById("get-coordinates")
+        .addEventListener("click", function () {
+          // Set the values of the input fields
+          document.getElementById("latitude").value = lat;
+          document.getElementById("longitude").value = lng;
+        });
+
+      // Create a ROSLIB instance
+      var ros = new ROSLIB.Ros();
+
+      ros.on("error", function (error) {
+        console.log(error);
+      });
+
+      // Find out exactly when we made a connection.
+      ros.on("connection", function () {
+        console.log("Connection made!");
+      });
+
+      ros.on("close", function () {
+        console.log("Connection closed.");
+      });
+
+      // Define ROS bridge URL
+      var rosBridgeUrl = "ws://localhost:9090";
+
+      // Connect to ROS Bridge
+      ros.connect(rosBridgeUrl);
+
+      // https://stackoverflow.com/questions/46101450/explanation-of-leaflet-custom-icon-latlng-vs-xy-coordinates
+      var navIcon = L.icon({
+        iconUrl: "/css/images/navigation-icon.png",
+        // shadowUrl: "leaf-shadow.png",
+
+        iconSize: [48, 48], // size of the icon
+        // shadowSize: [50, 64], // size of the shadow
+        iconAnchor: [24, 28], // point of the icon which will correspond to marker's location
+        // shadowAnchor: [4, 62], // the same for the shadow
+        // popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+      });
+
+      subscribeToROSTopic(ros, "/fix", "sensor_msgs/NavSatFix");
+      subscribeToROSTopic(ros, "/hex", "sensor_msgs/NavSatFix");
+      subscribeToROSTopic(ros, "/yaw", "std_msgs/Float32");
+
+      console.log("done");
+    </script>
+  </body>
+</html>

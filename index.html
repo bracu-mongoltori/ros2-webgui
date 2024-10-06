@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bootstrap demo</title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+  </head>
+  <body>
+    <!-- SPEED -->
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <label for="robot-speed">
+          <strong>Robot speed</strong>
+        </label>
+        <input
+          type="range"
+          min="15"
+          max="80"
+          class="custom-range"
+          id="robot-speed"
+        />
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+
+    <!-- JOYSTICK -->
+    <div class="row my-4">
+      <div class="col">
+        <div
+          class="d-flex justify-content-center"
+          style="width: 210px; height: 210px"
+        >
+          <div id="joystick"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="row my-4">
+      <div class="col-md-8">
+        <div class="alert alert-success">
+          <h4 class="alert-heading">ROS WebUI</h4>
+          <ul>
+            <li>set speed using a slider</li>
+            <li>use joystick or WASD keys on keyboard to move</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONNECTION STATUS CARDS -->
+    <div class="row my-4 d-flex">
+      <div class="col-md-4">
+        <div class="card text-white bg-success">
+          <div class="card-body">
+            <h5 class="card-title">Connection Status</h5>
+            <p class="card-text">Connection successful!</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-danger">
+          <div class="card-body">
+            <h5 class="card-title">Error Message</h5>
+            <p class="card-text">Unable to connect to ROS server.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-warning">
+          <div class="card-body">
+            <h5 class="card-title">Connection Status</h5>
+            <p class="card-text">Connecting...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+    <script src="js/nipplejs.min.js"></script>
+    <script src="js/keyboardteleop.js"></script>
+    <script src="js/webui.js"></script>
+  </body>
+</html>

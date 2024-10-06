@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Bootstrap Sass &amp; JS</title>
+</head>
+<body>
+    <p class="fs-4">You've successfully loaded up a Bootstrap example! It's loaded up with <a href="https://getbootstrap.com/">Bootstrap 5</a> and tooling for compiling our Sass and JavaScript to your needs.</p>
+
+    <p class="text-muted">Created and open sourced by the Bootstrap team. Licensed MIT.</p>
+    
+    <p id="ros-message" class="fs-5">Waiting for ROS messages...</p>
+
+    <script type="module" src="js/main.js"></script>
+    <script type="module">
+        // Connect to ROS
+        const ros = new ROSLIB.Ros({
+            url: 'ws://localhost:9090' // Change if needed
+        });
+
+        ros.on('connection', function() {
+            console.log('Connected to websocket server.');
+        });
+
+        ros.on('error', function(error) {
+            console.log('Error connecting to websocket server: ', error);
+        });
+
+        ros.on('close', function() {
+            console.log('Connection to websocket server closed.');
+        });
+
+        // Subscribe to a ROS 2 topic
+        const listener = new ROSLIB.Topic({
+            ros: ros,
+            name: '/topic', // Replace with your topic name
+            messageType: 'std_msgs/String' // Change based on your message type
+        });
+
+        listener.subscribe(function(message) {
+            console.log('Received message on ' + listener.name + ': ' + message.data);
+            document.getElementById('ros-message').innerText = 'Received: ' + message.data;
+        });
+    </script>
+</body>
+</html>
+
