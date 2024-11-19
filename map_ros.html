@@ -290,6 +290,54 @@
         document.getElementById(id).appendChild(card);
       }
 
+      function hexagonCoordinates(centerLat, centerLon, radius) {
+          /**
+           * Generate 6 geographical coordinates for a hexagon centered around a point.
+           *
+           * @param {number} centerLat - Latitude of the center point in degrees.
+           * @param {number} centerLon - Longitude of the center point in degrees.
+           * @param {number} radius - Radius in meters.
+           * @returns {Array} - List of 6 [latitude, longitude] arrays representing the hexagon vertices.
+           */  
+          const EARTH_RADIUS = 6371.0 * 1000; // Earth's radius in meters
+
+          // Convert radius to radians (distance/earth_radius)
+          const radDist = radius / EARTH_RADIUS;
+          const vertices = [];
+
+          for (let i = 0; i < 6; i++) {
+              // Angle for each vertex (60-degree increments in radians)
+              const angle = (i * 60) * (Math.PI / 180);
+          
+              // Calculate latitude of the vertex
+              const vertexLat = Math.asin(
+                  Math.sin(centerLat * (Math.PI / 180)) * Math.cos(radDist) +
+                  Math.cos(centerLat * (Math.PI / 180)) * Math.sin(radDist) * Math.cos(angle)
+              );
+          
+              // Calculate longitude of the vertex
+              const vertexLon = (centerLon * (Math.PI / 180)) + Math.atan2(
+                  Math.sin(angle) * Math.sin(radDist) * Math.cos(centerLat * (Math.PI / 180)),
+                  Math.cos(radDist) - Math.sin(centerLat * (Math.PI / 180)) * Math.sin(vertexLat)
+              );
+          
+              // Convert back to degrees and add to the list
+              vertices.push([vertexLat * (180 / Math.PI), vertexLon * (180 / Math.PI)]);
+          }
+        
+          return vertices;
+      }
+
+      function addHexagonMarkers(map, vertices) {
+        vertices.forEach((vertex, index) => {
+            const [lat, lon] = vertex;
+            L.marker([lat, lon])
+            .bindPopup(`Vertex ${index + 1}: <br>Lat: ${lat.toFixed(6)}, Lon: ${lon.toFixed(6)}`)
+            .addTo(map);
+        });
+        vertices.push(vertices[0]); // Close the polygon
+        L.polyline(vertices, { color: "red" }).addTo(map);
+      }
       // MAIN FUNCTION
       // Call the functions to create the map and add initial markers
       createMap();
@@ -301,6 +349,13 @@
       lng = 0.0;
       angle = 0.0;
       roverMarker = null;
+
+      // Generate hexagon vertices
+      const centerLat = 51.5074; // Latitude for London, UK
+      const centerLon = -0.1278; // Longitude for London, UK
+      const radius = 10; // Radius in kilometers
+      const hexagonVertices = hexagonCoordinates(centerLat, centerLon, radius);
+      addHexagonMarkers(map, hexagonVertices);
 
       document
         .getElementById("coordinate-form")

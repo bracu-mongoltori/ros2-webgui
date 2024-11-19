@@ -32,3 +32,4 @@ Thumbs.db
 # Folders to ignore
 dist
 node_modules
+mapproxy/cache_data
