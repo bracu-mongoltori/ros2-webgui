@@ -1,609 +1,553 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Rover Science Box Dashboard</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <style>
-      .bold {
-        font-weight: 700;
-      }
-      body {
-        background-color: #fdd9b7;
-      }
-      .red {
-        background-color: #600404;
-      }
-      .red-border {
-        border-color: #600404;
-        border-width: 3px;
-      }
-    </style>
-  </head>
-  <body>
-    <nav class="navbar top red" data-bs-theme="dark">
-      <div class="container-fluid">
-        <button class="navbar-toggler" type="button"></button>
-        <a class="navbar-brand" href="#">Rover Science Box Dashboard</a>
-        <a class="navbar-brand" href="#">
-          <img
-            src="assets/logo.png"
-            alt="logo"
-            height="40px"
-            style="margin-right: auto"
-          />
-        </a>
-      </div>
-    </nav>
-    <div style="padding: 1.5%">
-      <h1 class="text-center">Sensor Readings</h1>
-      <div class="row row-cols-1 row-cols-md-6">
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">UV</h6>
-              <h1 class="display-1 text-center bold" id="uv">0.0</h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small>
-                      Last Measurement - <span id="uv-time">12:00:00</span
-                      ><br />
-                      Unit - Nanometers
-                    </small></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">Intensity Of Light</h6>
-              <h1 class="display-1 text-center bold" id="intensity-of-light">
-                0.0
-              </h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small
-                      ><small>
-                        Last Measurement -
-                        <span id="intensity-of-light-time">12:00:00</span><br />
-                        Unit - Lux (lumen/square meter)
-                      </small></small
-                    ></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">Pressure</h6>
-              <h1 class="display-1 text-center bold" id="pressure">0.0</h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small>
-                      Last Measurement - <span id="pressure-time">12:00:00</span
-                      ><br />
-                      Unit - ppm
-                    </small></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">Conductivity Meter</h6>
-              <h1 class="display-1 text-center bold" id="conductivity">0.0</h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small>
-                      Last Measurement -
-                      <span id="conductivity-time">12:00:00</span><br />
-                      Unit - m5/cm
-                    </small></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">pH</h6>
-              <h1 class="display-1 text-center bold" id="pH">0.0</h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small>
-                      Last Measurement - <span id="pH-time">12:00:00</span
-                      ><br />
-                      Unit - Degree Celcius
-                    </small></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">Moisture Content</h6>
-              <h1 class="display-1 text-center bold" id="moisture">0.0</h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small>
-                      Last Measurement - <span id="moisture-time">12:00:00</span
-                      ><br />
-                      Unit - Percentage
-                    </small></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row row-cols-1 row-cols-md-6 mt-4">
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">Nitrogen</h6>
-              <h1 class="display-1 text-center bold" id="nitrogen">0.0</h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small>
-                      Last Measurement - <span id="nitrogen-time">12:00:00</span
-                      ><br />
-                      Unit - Nanometers
-                    </small></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">Phosphorus</h6>
-              <h1 class="display-1 text-center bold" id="phosphorus">0.0</h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small
-                      ><small>
-                        Last Measurement -
-                        <span id="phosphorus-time">12:00:00</span><br />
-                        Unit - Lux (lumen/square meter)
-                      </small></small
-                    ></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">Potassium</h6>
-              <h1 class="display-1 text-center bold" id="potassium">0.0</h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small>
-                      Last Measurement -
-                      <span id="potassium-time">12:00:00</span><br />
-                      Unit - ppm
-                    </small></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">Carbon Monoxide</h6>
-              <h1 class="display-1 text-center bold" id="carbon-monoxide">
-                0.0
-              </h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small>
-                      Last Measurement -
-                      <span id="carbon-monoxide-time">12:00:00</span><br />
-                      Unit - m5/cm
-                    </small></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">Soil Temperature</h6>
-              <h1 class="display-1 text-center bold" id="soil-temperature">
-                0.0
-              </h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small>
-                      Last Measurement -
-                      <span id="soil-temperature-time">12:00:00</span><br />
-                      Unit - Degree Celcius
-                    </small></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="card-title text-center">Soil Moisture Content</h6>
-              <h1 class="display-1 text-center bold" id="soil-moisture">0.0</h1>
-              <p class="card-text text-center">
-                <small
-                  ><small
-                    ><small>
-                      Last Measurement -
-                      <span id="soil-moisture-time">12:00:00</span><br />
-                      Unit - Percentage
-                    </small></small
-                  ></small
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr class="my-4 mx-auto red-border" />
-    <h1 class="text-center">Graphs</h1>
-    <div style="padding-block: 1%">
-      <div class="card">
-        <div class="card-body">
-          <h6 class="card-title text-center">NPK Graph</h6>
-          <canvas id="npk-graph" height="30%" width="100%"></canvas>
-        </div>
-      </div>
-    </div>
-    <h1 class="text-center">Avg High and Lows</h1>
-    <div class="container my-4">
-      <div class="row">
-        <div class="col-md-3 mb-4">
-          <div class="card">
-            <div class="card-header">Soil Moisture</div>
-            <div class="card-body">
-              <p>Average: <span id="avg-soil-moisture">50</span></p>
-              <p>Highest: <span id="high-soil-moisture">100</span></p>
-              <p>Lowest: <span id="low-soil-moisture">10</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 mb-4">
-          <div class="card">
-            <div class="card-header">Soil Temperature</div>
-            <div class="card-body">
-              <p>Average: <span id="avg-soil-temperature">50</span></p>
-              <p>Highest: <span id="high-soil-temperature">100</span></p>
-              <p>Lowest: <span id="low-soil-temperature">10</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 mb-4">
-          <div class="card">
-            <div class="card-header">Soil Conductivity</div>
-            <div class="card-body">
-              <p>Average: <span id="avg-soil-conductivity">50</span></p>
-              <p>Highest: <span id="high-soil-conductivity">100</span></p>
-              <p>Lowest: <span id="low-soil-conductivity">10</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 mb-4">
-          <div class="card">
-            <div class="card-header">Carbon Dioxide</div>
-            <div class="card-body">
-              <p>Average: <span id="avg-carbon-dioxide">50</span></p>
-              <p>Highest: <span id="high-carbon-dioxide">100</span></p>
-              <p>Lowest: <span id="low-carbon-dioxide">10</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 mb-4">
-          <div class="card">
-            <div class="card-header">Hydrogen</div>
-            <div class="card-body">
-              <p>Average: <span id="avg-hydrogen">50</span></p>
-              <p>Highest: <span id="high-hydrogen">100</span></p>
-              <p>Lowest: <span id="low-hydrogen">10</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 mb-4">
-          <div class="card">
-            <div class="card-header">Light Intensity</div>
-            <div class="card-body">
-              <p>Average: <span id="avg-light-intensity">50</span></p>
-              <p>Highest: <span id="high-light-intensity">100</span></p>
-              <p>Lowest: <span id="low-light-intensity">10</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 mb-4">
-          <div class="card">
-            <div class="card-header">Radiation</div>
-            <div class="card-body">
-              <p>Average: <span id="avg-uv">50</span></p>
-              <p>Highest: <span id="high-uv">100</span></p>
-              <p>Lowest: <span id="low-uv">10</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 mb-4">
-          <div class="card">
-            <div class="card-header">Carbon Monoxide</div>
-            <div class="card-body">
-              <p>Average: <span id="avg-carbon-monoxide">50</span></p>
-              <p>Highest: <span id="high-carbon-monoxide">100</span></p>
-              <p>Lowest: <span id="low-carbon-monoxide">10</span></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/chart.js/dist/chart.umd.js"></script>
-    <script src="js/roslib.min.js"></script>
-    <script src="js/luxon.js"></script>
-    <script src="js/chartjs-adapter-luxon.js"></script>
-    <script src="js/chartjs-plugin-streaming.js"></script>
-    <script src="stream.js"></script>
-    <script>
-      function updateValues(cardId, avg, high, low) {
-        document.getElementById("avg-" + cardId).textContent = avg;
-        document.getElementById("high-" + cardId).textContent = high;
-        document.getElementById("low-" + cardId).textContent = low;
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rover Science Box Dashboard</title>
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <style>
+    .bold {
+      font-weight: 700;
+    }
+
+    body {
+      background-color: #fdd9b7;
+    }
+
+    .red {
+      background-color: #600404;
+    }
+
+    .red-border {
+      border-color: #600404;
+      border-width: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar top red" data-bs-theme="dark">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button"></button>
+      <a class="navbar-brand" href="#">Rover Science Box Dashboard</a>
+      <a class="navbar-brand" href="#">
+        <img src="assets/logo.png" alt="logo" height="40px" style="margin-right: auto" />
+      </a>
+    </div>
+  </nav>
+  <div style="padding: 1.5%">
+    <h1 class="text-center">Sensor Readings</h1>
+    <div class="row row-cols-1 row-cols-md-6">
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">UV</h6>
+            <h1 class="display-1 text-center bold" id="uv">0.0</h1>
+            <p class="card-text text-center">
+              <small><small><small>
+                    Last Measurement - <span id="uv-time">12:00:00</span><br />
+                    Unit - Nanometers
+                  </small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">Intensity Of Light</h6>
+            <h1 class="display-1 text-center bold" id="intensity-of-light">
+              0.0
+            </h1>
+            <p class="card-text text-center">
+              <small><small><small><small>
+                      Last Measurement -
+                      <span id="intensity-of-light-time">12:00:00</span><br />
+                      Unit - Lux (lumen/square meter)
+                    </small></small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">Pressure</h6>
+            <h1 class="display-1 text-center bold" id="pressure">0.0</h1>
+            <p class="card-text text-center">
+              <small><small><small>
+                    Last Measurement - <span id="pressure-time">12:00:00</span><br />
+                    Unit - ppm
+                  </small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">Conductivity Meter</h6>
+            <h1 class="display-1 text-center bold" id="conductivity">0.0</h1>
+            <p class="card-text text-center">
+              <small><small><small>
+                    Last Measurement -
+                    <span id="conductivity-time">12:00:00</span><br />
+                    Unit - m5/cm
+                  </small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">pH</h6>
+            <h1 class="display-1 text-center bold" id="pH">0.0</h1>
+            <p class="card-text text-center">
+              <small><small><small>
+                    Last Measurement - <span id="pH-time">12:00:00</span><br />
+                    Unit - Degree Celcius
+                  </small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">Moisture Content</h6>
+            <h1 class="display-1 text-center bold" id="moisture">0.0</h1>
+            <p class="card-text text-center">
+              <small><small><small>
+                    Last Measurement - <span id="moisture-time">12:00:00</span><br />
+                    Unit - Percentage
+                  </small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-6 mt-4">
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">Nitrogen</h6>
+            <h1 class="display-1 text-center bold" id="nitrogen">0.0</h1>
+            <p class="card-text text-center">
+              <small><small><small>
+                    Last Measurement - <span id="nitrogen-time">12:00:00</span><br />
+                    Unit - Nanometers
+                  </small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">Phosphorus</h6>
+            <h1 class="display-1 text-center bold" id="phosphorus">0.0</h1>
+            <p class="card-text text-center">
+              <small><small><small><small>
+                      Last Measurement -
+                      <span id="phosphorus-time">12:00:00</span><br />
+                      Unit - Lux (lumen/square meter)
+                    </small></small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">Potassium</h6>
+            <h1 class="display-1 text-center bold" id="potassium">0.0</h1>
+            <p class="card-text text-center">
+              <small><small><small>
+                    Last Measurement -
+                    <span id="potassium-time">12:00:00</span><br />
+                    Unit - ppm
+                  </small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">Carbon Monoxide</h6>
+            <h1 class="display-1 text-center bold" id="carbon-monoxide">
+              0.0
+            </h1>
+            <p class="card-text text-center">
+              <small><small><small>
+                    Last Measurement -
+                    <span id="carbon-monoxide-time">12:00:00</span><br />
+                    Unit - m5/cm
+                  </small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">Soil Temperature</h6>
+            <h1 class="display-1 text-center bold" id="soil-temperature">
+              0.0
+            </h1>
+            <p class="card-text text-center">
+              <small><small><small>
+                    Last Measurement -
+                    <span id="soil-temperature-time">12:00:00</span><br />
+                    Unit - Degree Celcius
+                  </small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="card-title text-center">Soil Moisture Content</h6>
+            <h1 class="display-1 text-center bold" id="soil-moisture">0.0</h1>
+            <p class="card-text text-center">
+              <small><small><small>
+                    Last Measurement -
+                    <span id="soil-moisture-time">12:00:00</span><br />
+                    Unit - Percentage
+                  </small></small></small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="my-4 mx-auto red-border" />
+  <h1 class="text-center">Graphs</h1>
+  <div style="padding-block: 1%">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title text-center">NPK Graph</h6>
+        <canvas id="npk-graph" height="30%" width="100%"></canvas>
+      </div>
+    </div>
+  </div>
+  <h1 class="text-center">Avg High and Lows</h1>
+  <div class="container my-4">
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-header">Soil Moisture</div>
+          <div class="card-body">
+            <p>Average: <span id="avg-soil-moisture">50</span></p>
+            <p>Highest: <span id="high-soil-moisture">100</span></p>
+            <p>Lowest: <span id="low-soil-moisture">10</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-header">Soil Temperature</div>
+          <div class="card-body">
+            <p>Average: <span id="avg-soil-temperature">50</span></p>
+            <p>Highest: <span id="high-soil-temperature">100</span></p>
+            <p>Lowest: <span id="low-soil-temperature">10</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-header">Soil Conductivity</div>
+          <div class="card-body">
+            <p>Average: <span id="avg-soil-conductivity">50</span></p>
+            <p>Highest: <span id="high-soil-conductivity">100</span></p>
+            <p>Lowest: <span id="low-soil-conductivity">10</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-header">Carbon Dioxide</div>
+          <div class="card-body">
+            <p>Average: <span id="avg-carbon-dioxide">50</span></p>
+            <p>Highest: <span id="high-carbon-dioxide">100</span></p>
+            <p>Lowest: <span id="low-carbon-dioxide">10</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-header">Hydrogen</div>
+          <div class="card-body">
+            <p>Average: <span id="avg-hydrogen">50</span></p>
+            <p>Highest: <span id="high-hydrogen">100</span></p>
+            <p>Lowest: <span id="low-hydrogen">10</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-header">Light Intensity</div>
+          <div class="card-body">
+            <p>Average: <span id="avg-light-intensity">50</span></p>
+            <p>Highest: <span id="high-light-intensity">100</span></p>
+            <p>Lowest: <span id="low-light-intensity">10</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-header">Radiation</div>
+          <div class="card-body">
+            <p>Average: <span id="avg-uv">50</span></p>
+            <p>Highest: <span id="high-uv">100</span></p>
+            <p>Lowest: <span id="low-uv">10</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-header">Carbon Monoxide</div>
+          <div class="card-body">
+            <p>Average: <span id="avg-carbon-monoxide">50</span></p>
+            <p>Highest: <span id="high-carbon-monoxide">100</span></p>
+            <p>Lowest: <span id="low-carbon-monoxide">10</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/chart.js/dist/chart.umd.js"></script>
+  <script src="js/roslib.min.js"></script>
+  <script src="js/luxon.js"></script>
+  <script src="js/chartjs-adapter-luxon.js"></script>
+  <script src="js/chartjs-plugin-streaming.js"></script>
+  <script src="stream.js"></script>
+  <script>
+    function updateValues(cardId, avg, high, low) {
+      document.getElementById("avg-" + cardId).textContent = avg;
+      document.getElementById("high-" + cardId).textContent = high;
+      document.getElementById("low-" + cardId).textContent = low;
+    }
+
+    function calculateStats(values) {
+      if (values.length === 0) {
+        return {average: 0, highest: 0, lowest: 0};
       }
 
-      function calculateStats(values) {
-        if (values.length === 0) {
-          return { average: 0, highest: 0, lowest: 0 };
+      var sum = values.reduce((acc, val) => acc + val.value, 0);
+      var average = sum / values.length;
+      var highest = Math.max(...values.map((val) => val.value));
+      var lowest = Math.min(...values.map((val) => val.value));
+      average = average.toFixed(2);
+      highest = highest.toFixed(2);
+      lowest = lowest.toFixed(2);
+
+      return {average, highest, lowest};
+    }
+
+    function subscribeToROSTopic(ros, topic, msgtype, sensor, values = []) {
+      // Subscribe to the topic
+      var listener = new ROSLIB.Topic({
+        ros: ros,
+        name: topic, // Replace with your actual ROS topic name
+        messageType: msgtype, // Adjust message type if needed
+      });
+
+      // Define callback function to handle received messages
+      listener.subscribe(function (message) {
+        // Extract coordinates from the received message
+        //console.log(message)
+        var currentTime = Date.now();
+        value = message.data;
+        values.push({timestamp: currentTime, value: value});
+
+        // Remove values older than the window size
+        while (
+          values.length > 0 &&
+          currentTime - values[0].timestamp > windowSize
+        ) {
+          values.shift();
         }
+        //console.log(value)
+        var sensorCard = document.getElementById(sensor);
+        sensorCard.textContent = value.toFixed(2);
 
-        var sum = values.reduce((acc, val) => acc + val.value, 0);
-        var average = sum / values.length;
-        var highest = Math.max(...values.map((val) => val.value));
-        var lowest = Math.min(...values.map((val) => val.value));
-        average = average.toFixed(2);
-        highest = highest.toFixed(2);
-        lowest = lowest.toFixed(2);
+        var timeCard = document.getElementById(sensor + "-time");
+        var now = new Date();
+        timeCard.textContent =
+          now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
 
-        return { average, highest, lowest };
-      }
-
-      function subscribeToROSTopic(ros, topic, msgtype, sensor, values = []) {
-        // Subscribe to the topic
-        var listener = new ROSLIB.Topic({
-          ros: ros,
-          name: topic, // Replace with your actual ROS topic name
-          messageType: msgtype, // Adjust message type if needed
-        });
-
-        // Define callback function to handle received messages
-        listener.subscribe(function (message) {
-          // Extract coordinates from the received message
-          //console.log(message)
-          var currentTime = Date.now();
-          value = message.data;
-          values.push({ timestamp: currentTime, value: value });
-
-          // Remove values older than the window size
-          while (
-            values.length > 0 &&
-            currentTime - values[0].timestamp > windowSize
-          ) {
-            values.shift();
-          }
-          //console.log(value)
-          var sensorCard = document.getElementById(sensor);
-          sensorCard.textContent = value.toFixed(2);
-
-          var timeCard = document.getElementById(sensor + "-time");
-          var now = new Date();
-          timeCard.textContent =
-            now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
-
-          if (sensor == "nitrogen") {
-            myChart.data.datasets[0].data.push({
-              x: Date.now(),
-              y: value,
-            });
-          } else if (sensor == "phosphorus") {
-            myChart.data.datasets[1].data.push({
-              x: Date.now(),
-              y: value,
-            });
-          } else if (sensor == "potassium") {
-            myChart.data.datasets[2].data.push({
-              x: Date.now(),
-              y: value,
-            });
-          }
-          // update chart datasets keeping the current animation
-          myChart.update("quiet");
-        });
-      }
-      // Create a ROSLIB instance
-      var ros = new ROSLIB.Ros();
-
-      ros.on("error", function (error) {
-        console.log(error);
+        if (sensor == "nitrogen") {
+          myChart.data.datasets[0].data.push({
+            x: Date.now(),
+            y: value,
+          });
+        } else if (sensor == "phosphorus") {
+          myChart.data.datasets[1].data.push({
+            x: Date.now(),
+            y: value,
+          });
+        } else if (sensor == "potassium") {
+          myChart.data.datasets[2].data.push({
+            x: Date.now(),
+            y: value,
+          });
+        }
+        // update chart datasets keeping the current animation
+        myChart.update("quiet");
       });
+    }
+    // Create a ROSLIB instance
+    var ros = new ROSLIB.Ros();
 
-      // Find out exactly when we made a connection.
-      ros.on("connection", function () {
-        console.log("Connection made!");
-      });
+    ros.on("error", function (error) {
+      console.log(error);
+    });
 
-      ros.on("close", function () {
-        console.log("Connection closed.");
-      });
+    // Find out exactly when we made a connection.
+    ros.on("connection", function () {
+      console.log("Connection made!");
+    });
 
-      // Define ROS bridge URL
-      var rosBridgeUrl = "ws://localhost:9090";
-      windowSize = 60000; // 60 seconds
-      soil_moisture = [];
-      soil_temperature = [];
-      soil_conductivity = [];
-      carbon_monoxide = [];
-      carbon_dioxide = [];
-      hydrogen = [];
-      light_intensity = [];
-      uv = [];
+    ros.on("close", function () {
+      console.log("Connection closed.");
+    });
 
-      // Connect to ROS Bridge
-      ros.connect(rosBridgeUrl);
-      subscribeToROSTopic(ros, "/nh3", "std_msgs/Float32", "nh3");
-      subscribeToROSTopic(ros, "/uv", "std_msgs/Float32", "uv", uv);
-      subscribeToROSTopic(
-        ros,
-        "/light_intensity",
-        "std_msgs/Float32",
-        "intensity-of-light",
-        light_intensity
-      );
-      subscribeToROSTopic(
-        ros,
-        "/hydrogen",
-        "std_msgs/Float32",
-        "hydrogen",
-        hydrogen
-      );
-      subscribeToROSTopic(ros, "/pressure", "std_msgs/Float32", "pressure");
-      subscribeToROSTopic(
-        ros,
-        "/ec",
-        "std_msgs/Float32",
-        "conductivity",
-        soil_conductivity
-      );
-      subscribeToROSTopic(ros, "/ph", "std_msgs/Float32", "pH");
-      subscribeToROSTopic(ros, "/moisture", "std_msgs/Float32", "moisture");
-      subscribeToROSTopic(ros, "/nitrogen", "std_msgs/Float32", "nitrogen");
-      subscribeToROSTopic(ros, "/phosphorus", "std_msgs/Float32", "phosphorus");
-      subscribeToROSTopic(ros, "/potassium", "std_msgs/Float32", "potassium");
-      subscribeToROSTopic(
-        ros,
-        "/monoxide",
-        "std_msgs/Float32",
-        "carbon-monoxide",
-        carbon_monoxide
-      );
-      subscribeToROSTopic(
-        ros,
-        "/dioxide",
-        "std_msgs/Float32",
-        "carbon-dioxide",
-        carbon_dioxide
-      );
-      subscribeToROSTopic(
-        ros,
-        "/soil_temperature",
-        "std_msgs/Float32",
-        "soil-temperature",
-        soil_temperature
-      );
-      subscribeToROSTopic(
-        ros,
-        "/soil_moisture",
-        "std_msgs/Float32",
+    // Define ROS bridge URL
+    var rosBridgeUrl = "ws://localhost:9090";
+    windowSize = 60000; // 60 seconds
+    soil_moisture = [];
+    soil_temperature = [];
+    soil_conductivity = [];
+    carbon_monoxide = [];
+    carbon_dioxide = [];
+    hydrogen = [];
+    light_intensity = [];
+    uv = [];
+
+    // Connect to ROS Bridge
+    ros.connect(rosBridgeUrl);
+    subscribeToROSTopic(ros, "/nh3", "std_msgs/Float32", "nh3");
+    subscribeToROSTopic(ros, "/uv", "std_msgs/Float32", "uv", uv);
+    subscribeToROSTopic(
+      ros,
+      "/light_intensity",
+      "std_msgs/Float32",
+      "intensity-of-light",
+      light_intensity
+    );
+    subscribeToROSTopic(
+      ros,
+      "/hydrogen",
+      "std_msgs/Float32",
+      "hydrogen",
+      hydrogen
+    );
+    subscribeToROSTopic(ros, "/pressure", "std_msgs/Float32", "pressure");
+    subscribeToROSTopic(
+      ros,
+      "/ec",
+      "std_msgs/Float32",
+      "conductivity",
+      soil_conductivity
+    );
+    subscribeToROSTopic(ros, "/ph", "std_msgs/Float32", "pH");
+    subscribeToROSTopic(ros, "/moisture", "std_msgs/Float32", "moisture");
+    subscribeToROSTopic(ros, "/nitrogen", "std_msgs/Float32", "nitrogen");
+    subscribeToROSTopic(ros, "/phosphorus", "std_msgs/Float32", "phosphorus");
+    subscribeToROSTopic(ros, "/potassium", "std_msgs/Float32", "potassium");
+    subscribeToROSTopic(
+      ros,
+      "/monoxide",
+      "std_msgs/Float32",
+      "carbon-monoxide",
+      carbon_monoxide
+    );
+    subscribeToROSTopic(
+      ros,
+      "/dioxide",
+      "std_msgs/Float32",
+      "carbon-dioxide",
+      carbon_dioxide
+    );
+    subscribeToROSTopic(
+      ros,
+      "/soil_temperature",
+      "std_msgs/Float32",
+      "soil-temperature",
+      soil_temperature
+    );
+    subscribeToROSTopic(
+      ros,
+      "/soil_moisture",
+      "std_msgs/Float32",
+      "soil-moisture",
+      soil_moisture
+    );
+
+    // Log stats every 60 seconds
+    setInterval(() => {
+      var soil_moisture_stats = calculateStats(soil_moisture);
+      var soil_temperature_stats = calculateStats(soil_temperature);
+      var soil_conductivity_stats = calculateStats(soil_conductivity);
+      var carbon_dioxide_stats = calculateStats(carbon_dioxide);
+      var carbon_monoxide_stats = calculateStats(carbon_monoxide);
+      var hydrogen_stats = calculateStats(hydrogen);
+      var light_intensity_stats = calculateStats(light_intensity);
+      var uv_stats = calculateStats(uv);
+
+      updateValues(
         "soil-moisture",
-        soil_moisture
+        soil_moisture_stats.average,
+        soil_moisture_stats.highest,
+        soil_moisture_stats.lowest
       );
+      updateValues(
+        "soil-temperature",
+        soil_temperature_stats.average,
+        soil_temperature_stats.highest,
+        soil_temperature_stats.lowest
+      );
+      updateValues(
+        "soil-conductivity",
+        soil_conductivity_stats.average,
+        soil_conductivity_stats.highest,
+        soil_conductivity_stats.lowest
+      );
+      updateValues(
+        "carbon-dioxide",
+        carbon_dioxide_stats.average,
+        carbon_dioxide_stats.highest,
+        carbon_dioxide_stats.lowest
+      );
+      updateValues(
+        "carbon-monoxide",
+        carbon_monoxide_stats.average,
+        carbon_monoxide_stats.highest,
+        carbon_monoxide_stats.lowest
+      );
+      updateValues(
+        "hydrogen",
+        hydrogen_stats.average,
+        hydrogen_stats.highest,
+        hydrogen_stats.lowest
+      );
+      updateValues(
+        "light-intensity",
+        light_intensity_stats.average,
+        light_intensity_stats.highest,
+        light_intensity_stats.lowest
+      );
+      updateValues("uv", uv_stats.average, uv_stats.highest, uv_stats.lowest);
+      // }, 60000); // 60 seconds
+    }, 1);
+  </script>
+  <!-- <script src="stream.js"></script> -->
+</body>
 
-      // Log stats every 60 seconds
-      setInterval(() => {
-        var soil_moisture_stats = calculateStats(soil_moisture);
-        var soil_temperature_stats = calculateStats(soil_temperature);
-        var soil_conductivity_stats = calculateStats(soil_conductivity);
-        var carbon_dioxide_stats = calculateStats(carbon_dioxide);
-        var carbon_monoxide_stats = calculateStats(carbon_monoxide);
-        var hydrogen_stats = calculateStats(hydrogen);
-        var light_intensity_stats = calculateStats(light_intensity);
-        var uv_stats = calculateStats(uv);
-
-        updateValues(
-          "soil-moisture",
-          soil_moisture_stats.average,
-          soil_moisture_stats.highest,
-          soil_moisture_stats.lowest
-        );
-        updateValues(
-          "soil-temperature",
-          soil_temperature_stats.average,
-          soil_temperature_stats.highest,
-          soil_temperature_stats.lowest
-        );
-        updateValues(
-          "soil-conductivity",
-          soil_conductivity_stats.average,
-          soil_conductivity_stats.highest,
-          soil_conductivity_stats.lowest
-        );
-        updateValues(
-          "carbon-dioxide",
-          carbon_dioxide_stats.average,
-          carbon_dioxide_stats.highest,
-          carbon_dioxide_stats.lowest
-        );
-        updateValues(
-          "carbon-monoxide",
-          carbon_monoxide_stats.average,
-          carbon_monoxide_stats.highest,
-          carbon_monoxide_stats.lowest
-        );
-        updateValues(
-          "hydrogen",
-          hydrogen_stats.average,
-          hydrogen_stats.highest,
-          hydrogen_stats.lowest
-        );
-        updateValues(
-          "light-intensity",
-          light_intensity_stats.average,
-          light_intensity_stats.highest,
-          light_intensity_stats.lowest
-        );
-        updateValues("uv", uv_stats.average, uv_stats.highest, uv_stats.lowest);
-        // }, 60000); // 60 seconds
-      }, 1);
-    </script>
-    <!-- <script src="stream.js"></script> -->
-  </body>
 </html>
